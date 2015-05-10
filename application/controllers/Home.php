@@ -35,7 +35,7 @@ class Home extends CI_Controller {
 	
 	public function searchByHashtag($hashtag) {
 		$url = "search/tweets";
-		$params = array("q" => $hashtag);
+		$params = array("q" => $hashtag, "count" => 100);
 		$object = $this->connection->get($url, $params);
 		$this->output->set_output(json_encode($object));
 	}
