@@ -16,6 +16,7 @@ class Home extends CI_Controller {
 	{
 		$title = 'TWITTER STATS';
 		$scripts = array(
+			'twitter-wjs.js',
 			'index.js',
 			'fakeLoader.js'		
 		);

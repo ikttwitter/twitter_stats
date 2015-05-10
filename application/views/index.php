@@ -36,13 +36,14 @@
         <script>
             var base_url = '<?php echo base_url(); ?>';
         </script>
+        
     </head>
 
     <body>
         <div class="fakeloader"></div>
     	<input id="txtSearch" type="text" placeholder="Enter hashtag"></input>
     	<button id="btnSearch" onClick="searchByHastag();">Search</button>
-    	<div id="results"></div> 
+    	<div id="tweets"></div> 
     </body>
 
 </html>
