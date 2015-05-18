@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-require "vendor/autoload.php";
+require 'vendor/autoload.php';
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 class Home extends CI_Controller {
@@ -30,12 +30,27 @@ class Home extends CI_Controller {
 			'styles' => $styles,
 		);
 		
+		$data['trends'] = $this->topHashtags();
 		$this->load->view('index', $data);
 	}
 	
 	public function searchByHashtag($hashtag) {
-		$url = "search/tweets";
-		$params = array("q" => $hashtag, "count" => 100);
+		$url = 'search/tweets';
+		$params = array('q' => $hashtag, 'count' => 100);
+		$object = $this->connection->get($url, $params);
+		$this->output->set_output(json_encode($object));
+	}
+	
+	public function topHashtags() {
+		$url = 'trends/place';
+		$params = array('id' => '1');
+		$object = $this->connection->get($url, $params);
+		return $object[0]->trends;
+	}
+	
+	public function searchByUser($user) {
+		$url = 'users/search';
+		$params = array('q' => $user, 'count' => 100);
 		$object = $this->connection->get($url, $params);
 		$this->output->set_output(json_encode($object));
 	}

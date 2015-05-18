@@ -39,11 +39,55 @@
         
     </head>
 
-    <body>
+    <body style="padding-top: 70px;">
         <div class="fakeloader"></div>
-    	<input id="txtSearch" type="text" placeholder="Enter hashtag"></input>
-    	<button id="btnSearch" onClick="searchByHastag();">Search</button>
-    	<div id="tweets"></div> 
+        
+	    <nav id="navbar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a id="btnMain" class="navbar-brand" href="#">In touch</a>
+					<form class="navbar-form navbar-left" role="search">
+						<div class="form-group">
+							<input id="txtSearch" type="text" class="form-control"
+								placeholder="Enter #hashtag or @user ...">
+						
+						</div>
+						<button id="btnSearch" onClick="search(); return false;" type="submit"
+							class="btn btn-default">Search</button>
+					</form>
+				</div>
+			</div>
+		</nav>
+		
+        <div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<p class="lead">Most popular hashtags</p>
+					<div id="trends" class="list-group menu" role="menu">
+					<?php
+				        if (isset($trends)) {
+				            foreach ($trends as $trend) {
+				                echo '<a  target="_blank" href="'.$trend->url.'" class="list-group-item venue">'.$trend->name.'</a>';
+				            }
+				        }
+			        ?> 
+					</div>
+				</div>
+					
+				<div class="col-md-9">
+					<div id="tweets" class="panel panel-default">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
     </body>
 
 </html>
