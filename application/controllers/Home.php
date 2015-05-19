@@ -16,7 +16,6 @@ class Home extends CI_Controller {
 	{
 		$title = 'TWITTER STATS';
 		$scripts = array(
-			'twitter-wjs.js',
 			'index.js',
 			'fakeLoader.js'		
 		);
@@ -31,28 +30,51 @@ class Home extends CI_Controller {
 		);
 		
 		$data['trends'] = $this->topHashtags();
+		$data['searchHashtag'] = $data['trends'][0]->name;
+		$data['tweets'] = $this->searchByHashtag($data['searchHashtag']);
 		$this->load->view('index', $data);
 	}
 	
 	public function searchByHashtag($hashtag) {
+
 		$url = 'search/tweets';
 		$params = array('q' => $hashtag, 'count' => 100);
 		$object = $this->connection->get($url, $params);
-		$this->output->set_output(json_encode($object));
+		
+		if($this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode($object));
+		}
+		else {
+			return $object;
+		}
 	}
 	
 	public function topHashtags() {
+
 		$url = 'trends/place';
 		$params = array('id' => '1');
 		$object = $this->connection->get($url, $params);
-		return $object[0]->trends;
+		
+		if($this->input->is_ajax_request()) {
+			$this->output->set_output($object[0]->trends);
+		}
+		else {
+			return $object[0]->trends;
+		}
 	}
 	
 	public function searchByUser($user) {
+
 		$url = 'users/search';
 		$params = array('q' => $user, 'count' => 100);
 		$object = $this->connection->get($url, $params);
-		$this->output->set_output(json_encode($object));
+		
+		if($this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode($object));
+		}
+		else {
+			return $object;
+		}
 	}
 	
 }

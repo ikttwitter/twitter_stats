@@ -1,3 +1,7 @@
+$(document).ready(function() {
+	searchTwitter(this, $("#lblSearch").text());
+});
+
 function showLoader() {
 	$(".fakeloader").fakeLoader({
 		bgColor : "rgba(0,0,0,0.7)",
@@ -18,7 +22,6 @@ function ajaxRequest(url, type) {
 		type : 'GET',
 		dataType : 'json',
 		success : function(data) {
-			hideLoader();
 			console.log(JSON.stringify(data));
 			if(type == "searchByUser") {
 				displayUser(data);
@@ -26,6 +29,7 @@ function ajaxRequest(url, type) {
 			else if(type == "searchByHashtag") {
 				displayTweets(data);
 			}
+			hideLoader();
 		},
 		error : function() {
 			hideLoader();
@@ -34,8 +38,15 @@ function ajaxRequest(url, type) {
 	});
 }
 
-function search() {
-	var searchText = $("#txtSearch").val();
+function searchTwitter(target, searchText) {
+	if(!searchText)
+		searchText = $("#txtSearch").val();
+	else{
+		$(".popularHashtag").removeClass('active');
+		$(target).addClass('active');
+	}
+	$("#lblSearch").text(searchText);
+	
 	var url, type;
 	
 	if(searchText.charAt(0) == '@') { //Search user
@@ -51,7 +62,7 @@ function search() {
 		type = 'searchByHashtag';
 	}
 	
-	var results = ajaxRequest(url, type);
+	ajaxRequest(url, type);
 }
 
 function displayUser(data) {
@@ -75,7 +86,7 @@ function displayTweets(data) {
 function displayTweet(id) {
 	twttr.widgets.createTweet(id,
 			document.getElementById("tweets"), {
-				align : 'left'
+				align : 'center'
 			}).then(function(el) {
 		console.log("@ev's Tweet has been displayed.")
 	});

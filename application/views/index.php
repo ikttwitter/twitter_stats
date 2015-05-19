@@ -34,12 +34,22 @@
         ?> 
         
         <script>
-            var base_url = '<?php echo base_url(); ?>';
+		  window.twttr = (function (d,s,id) {
+		      var t, js, fjs = d.getElementsByTagName(s)[0];
+		      if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
+		      js.src="https://platform.twitter.com/widgets.js";
+		      fjs.parentNode.insertBefore(js, fjs);
+		      return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
+		  }(document, "script", "twitter-wjs"));
+		</script>
+        <script>
+            var base_url = '<?php echo base_url(); ?>';	
         </script>
         
     </head>
 
     <body style="padding-top: 70px;">
+        <div id="twitter-wjs"></div>
         <div class="fakeloader"></div>
         
 	    <nav id="navbar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -58,7 +68,7 @@
 								placeholder="Enter #hashtag or @user ...">
 						
 						</div>
-						<button id="btnSearch" onClick="search(); return false;" type="submit"
+						<button id="btnSearch" onClick="searchTwitter(); return false;" type="submit"
 							class="btn btn-default">Search</button>
 					</form>
 				</div>
@@ -72,8 +82,11 @@
 					<div id="trends" class="list-group menu" role="menu">
 					<?php
 				        if (isset($trends)) {
-				            foreach ($trends as $trend) {
-				                echo '<a  target="_blank" href="'.$trend->url.'" class="list-group-item venue">'.$trend->name.'</a>';
+				            foreach ($trends as $index => $trend) {
+				            	if ($index == 0)
+				                	echo '<a href="#" onclick="searchTwitter(this, \''.$trend->name.'\'); return false;" class="list-group-item active popularHashtag">'.$trend->name.'</a>';
+				            	else 
+				                	echo '<a href="#" onclick="searchTwitter(this, \''.$trend->name.'\'); return false;" class="list-group-item popularHashtag">'.$trend->name.'</a>';
 				            }
 				        }
 			        ?> 
@@ -81,8 +94,10 @@
 				</div>
 					
 				<div class="col-md-9">
+					<p class="lead">You are searching for 
+						<span id="lblSearch"><?php if (isset($searchHashtag)) echo $searchHashtag; ?></span>
+					</p>
 					<div id="tweets" class="panel panel-default">
-						
 					</div>
 				</div>
 			</div>
