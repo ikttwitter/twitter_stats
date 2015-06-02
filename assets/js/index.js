@@ -14,6 +14,13 @@ function hideLoader() {
 	$(".fakeloader").fadeOut();
 }
 
+function isLimitExceeded(data) {
+	if(data.errors && data.errors[0].code == 88) {
+		hideLoader();
+		window.location.replace(base_url + "home/limitExceeded");
+	}
+}
+
 function ajaxRequest(url, type) {
 	console.log(base_url + url);
 	showLoader();
@@ -22,7 +29,9 @@ function ajaxRequest(url, type) {
 		type : 'GET',
 		dataType : 'json',
 		success : function(data) {
-			console.log(JSON.stringify(data));
+			//console.log(JSON.stringify(data));
+			isLimitExceeded(data);
+			
 			if(type == "searchByUser") {
 				displayUser(data);
 			}

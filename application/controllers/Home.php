@@ -31,7 +31,6 @@ class Home extends CI_Controller {
 		
 		$data['trends'] = $this->topHashtags();
 		$data['searchHashtag'] = $data['trends'][0]->name;
-		$data['tweets'] = $this->searchByHashtag($data['searchHashtag']);
 		$this->load->view('index', $data);
 	}
 	
@@ -75,6 +74,10 @@ class Home extends CI_Controller {
 		else {
 			return $object;
 		}
+	}
+	
+	public function limitExceeded() {
+		$this->load->view('limit_exceeded');
 	}
 	
 }
