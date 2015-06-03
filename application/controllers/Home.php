@@ -29,15 +29,18 @@ class Home extends CI_Controller {
 			'styles' => $styles,
 		);
 		
-		$data['trends'] = $this->topHashtags();
-		$data['searchHashtag'] = $data['trends'][0]->name;
+		//$data['trends'] = $this->topHashtags();
+		//$data['searchHashtag'] = $data['trends'][0]->name;
+		
 		$this->load->view('index', $data);
 	}
 	
 	public function searchByHashtag($hashtag) {
 
-		$url = 'search/tweets';
-		$params = array('q' => $hashtag, 'count' => 100);
+		$url = "search/tweets";
+		$params = array(
+		"q" => $hashtag, 
+		"count" => 20,);
 		$object = $this->connection->get($url, $params);
 		
 		if($this->input->is_ajax_request()) {
@@ -48,17 +51,31 @@ class Home extends CI_Controller {
 		}
 	}
 	
-	public function topHashtags() {
-
+	public function topHashtags($woeid) {
+		
 		$url = 'trends/place';
+		$params = array('id' => $woeid);
+		$object = $this->connection->get($url, $params);
+		
+		if($this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode($object));
+		}
+		else {
+			return $object;
+		}
+	}
+	
+	public function searchLocations() {
+		
+		$url = 'trends/available';
 		$params = array('id' => '1');
 		$object = $this->connection->get($url, $params);
 		
 		if($this->input->is_ajax_request()) {
-			$this->output->set_output($object[0]->trends);
+			$this->output->set_output(json_encode($object));
 		}
 		else {
-			return $object[0]->trends;
+			return $object;
 		}
 	}
 	

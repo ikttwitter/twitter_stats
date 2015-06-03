@@ -34,7 +34,7 @@
         ?> 
         
         <script>
-		  window.twttr = (function (d,s,id) {
+			  window.twttr = (function (d,s,id) {
 		      var t, js, fjs = d.getElementsByTagName(s)[0];
 		      if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
 		      js.src="https://platform.twitter.com/widgets.js";
@@ -61,7 +61,7 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a id="btnMain" class="navbar-brand" href="#">In touch</a>
+					
 					<form class="navbar-form navbar-left" role="search">
 						<div class="form-group">
 							<input id="txtSearch" type="text" class="form-control"
@@ -79,8 +79,16 @@
 			<div class="row">
 				<div class="col-md-3">
 					<p class="lead">Most popular hashtags</p>
+					<div class="dropdown" style="margin-bottom:10px;" >
+						<button id="btnTrendsLocation" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+							Trends by location
+							<span class="caret"></span>
+						</button>
+						<ul id="trendDropdown" class="dropdown-menu scrollable-menu" style="height:auto; max-height: 200px; overflow-x: hidden;"  role="menu">
+						</ul>
+					</div>
 					<div id="trends" class="list-group menu" role="menu">
-					<?php
+					<!--<?php
 				        if (isset($trends)) {
 				            foreach ($trends as $index => $trend) {
 				            	if ($index == 0)
@@ -89,13 +97,13 @@
 				                	echo '<a href="#" onclick="searchTwitter(this, \''.$trend->name.'\'); return false;" class="list-group-item popularHashtag">'.$trend->name.'</a>';
 				            }
 				        }
-			        ?> 
+			        ?> //-->
 					</div>
 				</div>
 					<p class="lead">You are searching for 
-						<span id="lblSearch"><?php if (isset($searchHashtag)) echo $searchHashtag; ?></span>
+						<span id="lblSearch"></span>
 					</p>
-				<div id="panel" class="col-md-9">
+				<div id="panel" class="col-md-9" style="height:auto; max-height: 800px; overflow-x: hidden;">
 					
 					<div id="tweets" class="panel panel-default">
 					</div>
