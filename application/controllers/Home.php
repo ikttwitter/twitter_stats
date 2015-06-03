@@ -29,9 +29,6 @@ class Home extends CI_Controller {
 			'styles' => $styles,
 		);
 		
-		//$data['trends'] = $this->topHashtags();
-		//$data['searchHashtag'] = $data['trends'][0]->name;
-		
 		$this->load->view('index', $data);
 	}
 	

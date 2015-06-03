@@ -102,6 +102,13 @@ function searchTwitter(target, searchText) {
 		$(target).addClass('active');
 	}
 	
+	//select list-group item and unselect other items
+	$('.list-group-item').on('click',function(e){
+		var previous = $(this).closest(".list-group").children(".active");
+		previous.removeClass('active');
+		$(e.target).addClass('active');
+	});
+	
 	$("#lblSearch").text(searchText);
 	
 	var url, type;
