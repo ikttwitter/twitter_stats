@@ -79,6 +79,58 @@ function displayUser(data) {
 		alert("NO USER!");
 		return;
 	}
+		var container = document.getElementById("panel");
+		container.innerHTML = "";
+		for( i=0 ; i < data.length ; i++ )
+		{	
+			//create panel for user content
+			var userPanel = document.createElement("div");
+			userPanel.className = 'panel panel-primary';
+			//create panel header 
+			var header = document.createElement("div");
+			header.className = 'panel-heading';
+			userPanel.appendChild(header);
+			//append user screen name to header
+			var name = document.createElement("H3");
+			name.className = 'panel-title';
+			header.appendChild(name);
+			name.innerHTML = "@"+data[i].screen_name;
+			//create panel body
+			var body = document.createElement("div");
+			body.className = 'panel-body';
+			body.style.backgroundImage = "url('"+data[i].profile_background_image_url+"')";
+			userPanel.appendChild(body);
+			//create and add profile picture to body
+			var img = document.createElement("IMG");
+			img.src = data[i].profile_image_url.replace("_normal", "_bigger");
+			img.style.border = "thin solid black";
+			img.style.borderRadius = "10px";
+			body.appendChild(img);
+			
+			//add status to body
+			/*var status = document.createElement("H3");
+			status.style.backgroundColor = "white";
+			status.style.borderRadius = "10px";
+			status.style.padding = "10px";
+			status.style.opacity = "0.9";
+			if(data[i].status.text != null)
+				status.innerHTML = data[i].status.text;
+			status.style.cssFloat = "right";
+			body.appendChild(status);*/
+			
+			//footer
+			var footer = document.createElement("div");
+			footer.className = 'panel-footer';
+			userPanel.appendChild(footer);
+			var followers = document.createElement("H4");
+			followers.innerHTML = "Followers:"+data[i].followers_count;
+			var following = document.createElement("H4");
+			following.innerHTML = "Following:"+data[i].friends_count;
+			footer.appendChild(followers);
+			footer.appendChild(following);
+			container.appendChild(userPanel);	
+			
+		}
 }
 
 function displayTweets(data) {

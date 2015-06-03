@@ -92,11 +92,11 @@
 			        ?> 
 					</div>
 				</div>
-					
-				<div class="col-md-9">
 					<p class="lead">You are searching for 
 						<span id="lblSearch"><?php if (isset($searchHashtag)) echo $searchHashtag; ?></span>
 					</p>
+				<div id="panel" class="col-md-9">
+					
 					<div id="tweets" class="panel panel-default">
 					</div>
 				</div>
