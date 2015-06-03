@@ -88,25 +88,12 @@
 						</ul>
 					</div>
 					<div id="trends" class="list-group menu" role="menu">
-					<!--<?php
-				        if (isset($trends)) {
-				            foreach ($trends as $index => $trend) {
-				            	if ($index == 0)
-				                	echo '<a href="#" onclick="searchTwitter(this, \''.$trend->name.'\'); return false;" class="list-group-item active popularHashtag">'.$trend->name.'</a>';
-				            	else 
-				                	echo '<a href="#" onclick="searchTwitter(this, \''.$trend->name.'\'); return false;" class="list-group-item popularHashtag">'.$trend->name.'</a>';
-				            }
-				        }
-			        ?> //-->
 					</div>
 				</div>
 					<p class="lead">You are searching for 
 						<span id="lblSearch"></span>
 					</p>
-				<div id="panel" class="col-md-9" style="height:auto; max-height: 800px; overflow-x: hidden;">
-					
-					<div id="tweets" class="panel panel-default">
-					</div>
+				<div id="panel" class="col-md-9" style="height:auto; max-height: 800px; overflow-x: hidden; border-top:thin solid black; padding:10px;">
 				</div>
 			</div>
 		</div>

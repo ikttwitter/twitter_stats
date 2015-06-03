@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	//searchTwitter(this, $("#lblSearch").text());
 	searchTrendsLocations();
 });
 
@@ -171,7 +170,7 @@ function displayUser(data) {
 		return;
 	}
 	container = document.getElementById("panel");
-	container.innerHTML = "";
+	$('#panel').empty();
 		
 	for(i=0; i < data.length; i++ ){
 	
@@ -241,7 +240,7 @@ function displayTweets(data) {
 		alert("NO TWEETS!");
 		return;
 	}
-	$('#tweets').empty();
+	$('#panel').empty();
 	data.statuses.forEach(function(tweet) {
 		displayTweet(tweet.id);
 	});
@@ -249,7 +248,7 @@ function displayTweets(data) {
 
 function displayTweet(id) {
 	twttr.widgets.createTweet(id,
-			document.getElementById("tweets"), {
+			document.getElementById("panel"), {
 				align : 'center'
 			}).then(function(el) {
 		console.log("@ev's Tweet has been displayed.")
