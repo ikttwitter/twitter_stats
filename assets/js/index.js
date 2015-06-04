@@ -39,11 +39,9 @@ function ajaxRequest(url, type) {
 				displayTweets(data);
 			}
 			else if(type == "searchByLocation") {
-				
 				displayLocations(data);
 			}
 			else if(type == "searchTrends"){
-			
 				displayTrends(data);
 			}
 			hideLoader();
@@ -67,7 +65,7 @@ function searchTrendsLocations() {
 
 
 function displayLocations(data) {
-	var container, i;
+	var container, i, len;
 	
 	if(data.length == 0) {
 		alert("No available locations!");
@@ -75,8 +73,9 @@ function displayLocations(data) {
 	}
 	
 	container = document.getElementById("trendDropdown");
-	
-	for(i = 0; i<data.length; i++){
+	len = data.length;
+	for(i = 0; i < len; i++){
+		
 		if(data[i].placeType.name == 'Country'){
 			var country, link;
 			country = document.createElement("li");
@@ -88,8 +87,10 @@ function displayLocations(data) {
 			link.setAttribute('onClick', 'searchTrends(this.dataset.woeid, this.dataset.country)');
 			country.appendChild(link);
 			container.appendChild(country);
+			
 		}
 	}
+	
 }
 
 
@@ -104,9 +105,11 @@ function searchTwitter(target, searchText) {
 	
 	//select list-group item and unselect other items
 	$('.list-group-item').on('click',function(e){
-		var previous = $(this).closest(".list-group").children(".active");
-		previous.removeClass('active');
-		$(e.target).addClass('active');
+		if(e.target.className !== 'list-group-item disabled'){
+			var previous = $(this).closest(".list-group").children(".active");
+			previous.removeClass('active');
+			$(e.target).addClass('active');
+		}	
 	});
 	
 	$("#lblSearch").text(searchText);
@@ -132,7 +135,6 @@ function searchTwitter(target, searchText) {
 }
 
 function searchTrends(woeid, country){
-	
 	var container, trendHashtagPanelTitle, url, type;
 	
 	container = document.getElementById("trends");
@@ -150,27 +152,27 @@ function searchTrends(woeid, country){
 }
 
 function displayTrends(data) {
-	var container, i;
+	var container, i, len;
 	
 	if(data.length == 0) {
 		alert("No available trends!");
 		return;
 	}
 	container = document.getElementById("trends");
-	
-	for(i = 0; i<data[0].trends.length; i++){
+	len = data[0].trends.length;
+	for(i = 0; i < len; i++){
 		var trendHashtagPanel = document.createElement('a');
 		trendHashtagPanel.className = 'list-group-item';
 		trendHashtagPanel.innerHTML = data[0].trends[i].name;
 		trendHashtagPanel.dataset.name = data[0].trends[i].name;
 		trendHashtagPanel.setAttribute('href', '#');
 		trendHashtagPanel.setAttribute('onClick', 'searchTwitter(this, this.dataset.name)');
-		container.appendChild(trendHashtagPanel);
+		container.appendChild(trendHashtagPanel);	
 	}
 }
 
 function displayUser(data) {
-	var container, i;
+	var container, i, len;
 	
 	if(data.length == 0) {
 		alert("NO USER!");
@@ -178,8 +180,8 @@ function displayUser(data) {
 	}
 	container = document.getElementById("panel");
 	$('#panel').empty();
-		
-	for(i=0; i < data.length; i++ ){
+	len = data.length;	
+	for(i = 0; i < len; i++ ){
 	
 		//create panel for user content
 		var userPanel = document.createElement("div");
