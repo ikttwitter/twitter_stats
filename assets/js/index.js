@@ -48,7 +48,7 @@ function ajaxRequest(url, type) {
 			}
 			else if(type == 'userTimeline') {
 				displayUserTimeline(data);
-				displeyChart(data);
+				//displayChart(data);
 			}
 			hideLoader();
 		},
