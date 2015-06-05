@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	searchTrendsLocations();
+	createChart();
 });
 
 function showLoader() {
@@ -34,6 +35,7 @@ function ajaxRequest(url, type) {
 			
 			if(type == 'searchByUser') {
 				displayUser(data);
+				//displayChartUser(data);
 			}
 			else if(type == 'searchByHashtag') {
 				displayTweets(data);
@@ -43,6 +45,10 @@ function ajaxRequest(url, type) {
 			}
 			else if(type == 'searchTrends') {
 				displayTrends(data);
+			}
+			else if(type == 'userTimeline') {
+				displayUserTimeline(data);
+				displeyChart(data);
 			}
 			hideLoader();
 		},
@@ -116,7 +122,7 @@ function searchTwitter(target, searchText) {
 		
 	}
 	else if(searchText.charAt(0) == '#') { //Search hashtag
-		url = 'home/searchByHashtag/' + searchText.substring(1);
+		url = 'home/searchByHashtag/' + searchText.substr(1);
 		type = 'searchByHashtag';
 		
 	}
@@ -184,6 +190,14 @@ function displayUser(data) {
 		//create panel for user content
 		userPanel = document.createElement('div');
 		userPanel.className = 'panel panel-primary';
+		userPanel.style.maxWidth = '700px';
+		userPanel.style.margin = '0 auto';
+		userPanel.style.marginTop = '10px';
+		userPanel.dataset.name = data[i].screen_name;
+		userPanel.setAttribute('href', '#');
+		userPanel.setAttribute('onClick', 'searchUserTimeline(this.dataset.name)');
+		userPanel.style.cursor = 'pointer';
+		
 		//create panel header 
 		header = document.createElement('div');
 		header.className = 'panel-heading';
@@ -239,6 +253,32 @@ function displayUser(data) {
 	}
 }
 
+function searchUserTimeline(screenName){
+	var url, type;
+	console.log(screenName);
+	url = 'home/userTimeline/' + screenName;
+	type = 'userTimeline';
+	ajaxRequest(url, type);
+} 
+
+function displayUserTimeline(data) {
+	var container, i, len,
+	userPanel, header, name, body, img,
+	status, footer, following, followers;
+	
+	if(data.length == 0) {
+		alert('NO USER!');
+		return;
+	}
+	container = document.getElementById('panel');
+	document.getElementById('panel').innerHTML = '';
+	len = data.length;	
+
+	for(i = 0; i < len; i++) {
+		displayTweet(data[i].id);
+	}
+
+}
 function displayTweets(data) {
 	if(data.statuses.length == 0) {
 		alert('NO TWEETS!');
@@ -258,3 +298,44 @@ function displayTweet(id) {
 		console.log('@evs Tweet has been displayed.')
 	});
 }
+
+
+function createChart(){
+
+var data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+        {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.5)",
+            strokeColor: "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: "My Second dataset",
+            fillColor: "rgba(151,187,205,0.5)",
+            strokeColor: "rgba(151,187,205,0.8)",
+            highlightFill: "rgba(151,187,205,0.75)",
+            highlightStroke: "rgba(151,187,205,1)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+    ]
+};
+
+	var ctx = document.getElementById("myChart").getContext("2d");
+	var myNewChart = new Chart(ctx).Line(data);
+	
+}
+
+
+
+
+
+
+
+
+
+
+

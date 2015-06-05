@@ -36,12 +36,17 @@ class Home extends CI_Controller {
 
 		$url = "search/tweets";
 		$params = array(
-		"q" => $hashtag, 
-		"count" => 20,);
+		"q" => $hashtag,
+		"result_type" => "recent",		
+		"count" => 100, );
 		$object = $this->connection->get($url, $params);
-		
+		//$id = $object->statuses[99]->id;
+		$array = $object->statuses;
+		$id = end($array)->id;
+		$object2 = $this->connection->get($url, array("q" => $hashtag,"result_type" => "recent", "count" => 100,"max_id" => $id,));
+		//$object1 = $object + $object2;
 		if($this->input->is_ajax_request()) {
-			$this->output->set_output(json_encode($object));
+			$this->output->set_output(json_encode($object2));
 		}
 		else {
 			return $object;
@@ -80,6 +85,21 @@ class Home extends CI_Controller {
 
 		$url = 'users/search';
 		$params = array('q' => $user, 'count' => 100);
+		$object = $this->connection->get($url, $params);
+		
+		if($this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode($object));
+		}
+		else {
+			return $object;
+		}
+	}
+	
+		
+	public function userTimeline($screenName) {
+
+		$url = 'statuses/user_timeline';
+		$params = array('screen_name' => $screenName, 'count' => 10);
 		$object = $this->connection->get($url, $params);
 		
 		if($this->input->is_ajax_request()) {

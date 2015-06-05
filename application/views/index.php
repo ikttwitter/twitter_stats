@@ -16,6 +16,8 @@
         <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poiret+One" />
         <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+		<script type="text/javascript" src="assets/js/Chart/Chart.js" ></script>
+		
 
         <?php
 	        if (isset($scripts)) {
@@ -94,6 +96,9 @@
 						<span id="lblSearch"></span>
 					</p>
 				<div id="panel" class="col-md-9" style="height:auto; max-height: 800px; overflow-x: hidden; border-top:thin solid black; padding:10px;">
+				</div>
+				<div id="statistics" class="col-md-12" style="height:auto; max-height: 800px; overflow-x: hidden; border-top:thin solid black; padding:10px;">
+					<canvas id="myChart" width="400" height="400"></canvas>
 				</div>
 			</div>
 		</div>
