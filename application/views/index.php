@@ -97,8 +97,10 @@
 					</p>
 				<div id="panel" class="col-md-9" style="height:auto; max-height: 800px; overflow-x: hidden; border-top:thin solid black; padding:10px;">
 				</div>
-				<div id="statistics" class="col-md-12" style="height:auto; max-height: 800px; overflow-x: hidden; border-top:thin solid black; padding:10px;">
-					<canvas id="myChart" width="400" height="400"></canvas>
+				<div id="statistics" class="col-md-12" style="height:auto; border-top:thin solid black; padding:10px;">
+					<!-- <canvas class ="'panel panel-primary'" id="myChart" width="400" height="400" style="max-width = 700px; margin:0 auto;"></canvas> -->
+					
+					
 				</div>
 			</div>
 		</div>

@@ -33,20 +33,20 @@ class Home extends CI_Controller {
 	}
 	
 	public function searchByHashtag($hashtag) {
-
+		//$id = null;
 		$url = "search/tweets";
 		$params = array(
 		"q" => $hashtag,
 		"result_type" => "recent",		
-		"count" => 100, );
+		"count" => 10, );
 		$object = $this->connection->get($url, $params);
-		//$id = $object->statuses[99]->id;
-		$array = $object->statuses;
-		$id = end($array)->id;
+		$array1 = $object->statuses;
+		$id = end($array1)->id;
 		$object2 = $this->connection->get($url, array("q" => $hashtag,"result_type" => "recent", "count" => 100,"max_id" => $id,));
-		//$object1 = $object + $object2;
+		$array2 = $object2->statuses;
+		$array = array_merge($array1,$array2);
 		if($this->input->is_ajax_request()) {
-			$this->output->set_output(json_encode($object2));
+			$this->output->set_output(json_encode($array));
 		}
 		else {
 			return $object;
@@ -97,13 +97,52 @@ class Home extends CI_Controller {
 	
 		
 	public function userTimeline($screenName) {
+		date_default_timezone_set("UTC");
+		$now = time(); // or your date as well
+		
 
 		$url = 'statuses/user_timeline';
-		$params = array('screen_name' => $screenName, 'count' => 10);
-		$object = $this->connection->get($url, $params);
+		$params = array('screen_name' => $screenName, 'count' => 200, 'exclude_replies' => true, 'include_rts' => false,);
+		$object1 = $this->connection->get($url, $params);
+		
+		if(count($object1) < 200) {
+			
+			foreach($object1 as $key => $value) {
+				$twitter_date = strtotime($value->created_at);
+				$datediff = $now - $twitter_date;
+				$hour_diff = floor($datediff/(60*60));
+				if($hour_diff > 240) {
+					
+					unset($object1 [$key]);
+				}
+			
+			}
+			
+		}
+		
+		else if(count($object1) > 200){
+			$id = end($object1)->id ;
+			$object2 = $this->connection->get($url, array('screen_name' => $screenName, "count" => 200,"max_id" => $id, 'exclude_replies' => true, 'include_rts' => false,));
+			$object1 = array_merge($object1,$object2);
+			
+			
+			
+				foreach($object1 as $key => $value) {
+					$twitter_date = strtotime($value->created_at);
+					$datediff = $now - $twitter_date;
+					$hour_diff = floor($datediff/(60*60));
+					if($hour_diff > 240) {
+					
+						unset($object1 [$key]);
+					}
+			
+				}
+			
+		}	
+		$array = $object1;
 		
 		if($this->input->is_ajax_request()) {
-			$this->output->set_output(json_encode($object));
+			$this->output->set_output(json_encode($array));
 		}
 		else {
 			return $object;

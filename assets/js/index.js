@@ -262,33 +262,156 @@ function searchUserTimeline(screenName){
 } 
 
 function displayUserTimeline(data) {
-	var container, i, len,
-	userPanel, header, name, body, img,
-	status, footer, following, followers;
+	var sumFavourites = 0,
+	sumRetweets = 0,
+	numberOfTweets = 0,
+	numberOfFollowers,
+	numberOfFriends,
+	favouritesCount,
+	tweetsCount,
+	maxRTweet = 0,
+	maxFTweet = 0,
+	maxTweetRt,
+	maxTweetFv;
 	
 	if(data.length == 0) {
 		alert('NO USER!');
 		return;
-	}
-	container = document.getElementById('panel');
+	}	
+	
+	numberOfFollowers = data[0].user.followers_count;
+	numberOfFriends = data[0].user.friends_count;
+	favouritesCount = data[0].user.favourites_count;
+	tweetsCount = data[0].user.statuses_count;
+	numberOfTweets = data.length;
 	document.getElementById('panel').innerHTML = '';
-	len = data.length;	
-
-	for(i = 0; i < len; i++) {
-		displayTweet(data[i].id);
-	}
-
+	//data.statuses.forEach(function(tweet) {
+	data.forEach(function(tweet) {
+		sumRetweets += tweet.retweet_count;
+		sumFavourites += tweet.favorite_count;
+		if(tweet.retweet_count > maxRTweet) {
+			maxRTweet = tweet.retweet_count;
+			maxTweetRt = tweet.id;
+		}
+		if(tweet.favorite_count > maxRTweet) {
+			maxFTweet = tweet.favorite_count;
+			maxTweetFv = tweet.id;
+		}	
+		
+			displayTweet(tweet.id);
+		});
+	
+	container = document.getElementById('statistics');
+	document.getElementById('statistics').innerHTML = '';
+	
+	
+	//table1
+	var containerT1, table, head, body, title;
+	
+	containerT1 = document.createElement('div'); 
+	containerT1.className = 'container';
+	title = document.createElement('h2');
+	title.innerHTML = 'Информации за корисникот' + ' ' + '@' + data[0].user.screen_name;
+	containerT1.appendChild(title);
+	table = document.createElement('table');
+	table.className = 'table table-bordered'
+	head = table.createTHead();
+	var row = head.insertRow(0);
+	var cell1 = document.createElement('th');
+	row.appendChild(cell1);
+    var cell2 = document.createElement('th');
+	row.appendChild(cell2);
+	var cell3 = document.createElement('th');
+	row.appendChild(cell3);
+	var cell4 = document.createElement('th');
+	row.appendChild(cell4);
+    cell1.innerHTML = "Followers";
+    cell2.innerHTML = "Following";
+	cell3.innerHTML = "Favorites";
+	cell4.innerHTML = "Tweets";
+	body = table.createTBody();
+	var row = body.insertRow(0);
+	var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+    cell1.innerHTML = numberOfFollowers;
+    cell2.innerHTML = numberOfFriends;
+	cell3.innerHTML = favouritesCount;
+	cell4.innerHTML = tweetsCount;
+	containerT1.appendChild(table);
+	container.appendChild(containerT1);
+	
+	//table2
+	var containerT2, table, head, body, title;
+	
+	containerT2 = document.createElement('div'); 
+	containerT2.className = 'container';
+	title = document.createElement('h2');
+	title.innerHTML = 'Статистика за последните 10 дена';
+	containerT2.appendChild(title);
+	table = document.createElement('table');
+	table.className = 'table table-bordered'
+	head = table.createTHead();
+	var row = head.insertRow(0);
+	var cell1 = document.createElement('th');
+	row.appendChild(cell1);
+    var cell2 = document.createElement('th');
+	row.appendChild(cell2);
+	var cell3 = document.createElement('th');
+	row.appendChild(cell3);
+    cell1.innerHTML = "Број на твитови";
+    cell2.innerHTML = "Вкупен број на retweets";
+	cell3.innerHTML = "Вкупен број на favourites";
+	body = table.createTBody();
+	var row = body.insertRow(0);
+	var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+    cell1.innerHTML = numberOfTweets;
+    cell2.innerHTML = sumRetweets;
+	cell3.innerHTML = sumFavourites;
+	
+	containerT2.appendChild(table);
+	container.appendChild(containerT2);
+	
+	//najretvitnat tweet
+	var containerRt;
+	containerRt = document.createElement('div'); 
+	containerRt.className = 'container';
+	containerRt.id = 'containerRt';
+	title = document.createElement('h2');
+	title.innerHTML = 'Нај ретвитнат твит во последните 10 дена';
+	container.appendChild(title);
+	container.appendChild(containerRt);
+	displayTweetRt(maxTweetRt);
+	
+	//najfejvnat tweet
+	var containerFv;
+	containerFv = document.createElement('div'); 
+	containerFv.className = 'container';
+	containerFv.id = 'containerFv';
+	title = document.createElement('h2');
+	title.innerHTML = 'Нај фејвнат твит во последните 10 дена';
+	container.appendChild(title);
+	container.appendChild(containerFv);
+	displayTweetFv(maxTweetFv);
 }
+
 function displayTweets(data) {
-	if(data.statuses.length == 0) {
+	if(data.length == 0) {
 		alert('NO TWEETS!');
 		return;
 	}
 	document.getElementById('panel').innerHTML = '';
-	data.statuses.forEach(function(tweet) {
+	//data.statuses.forEach(function(tweet) {
+	data.forEach(function(tweet) {
+		console.log(tweet.created_at);
 		displayTweet(tweet.id);
-	});
+		});
 }
+
+
 
 function displayTweet(id) {
 	twttr.widgets.createTweet(id,
@@ -299,6 +422,23 @@ function displayTweet(id) {
 	});
 }
 
+function displayTweetRt(id) {
+	twttr.widgets.createTweet(id,
+			document.getElementById('containerRt'), {
+				align : 'center'
+			}).then(function(el) {
+		console.log('@evs Tweet has been displayed.')
+	});
+}
+
+function displayTweetFv(id) {
+	twttr.widgets.createTweet(id,
+			document.getElementById('containerFv'), {
+				align : 'center'
+			}).then(function(el) {
+		console.log('@evs Tweet has been displayed.')
+	});
+}
 
 function createChart(){
 
@@ -324,8 +464,8 @@ var data = {
     ]
 };
 
-	var ctx = document.getElementById("myChart").getContext("2d");
-	var myNewChart = new Chart(ctx).Line(data);
+	//var ctx = document.getElementById("myChart").getContext("2d");
+	//var myNewChart = new Chart(ctx).Line(data);
 	
 }
 
